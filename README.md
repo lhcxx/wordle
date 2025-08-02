@@ -72,7 +72,11 @@ The maximum number of rounds can be configured in the `GameConfiguration.cs` fil
    ```
 2. **Run the standalone game**:
    ```bash
-   dotnet run --project WordleGame.csproj -- Program
+   dotnet run --project WordleGame.csproj
+   ```
+   or explicitly:
+   ```bash
+   dotnet run --project WordleGame.csproj -- standalone
    ```
 
 ### Client/Server Mode
@@ -84,7 +88,11 @@ The maximum number of rounds can be configured in the `GameConfiguration.cs` fil
    ```
 2. **Using command line**:
    ```bash
-   dotnet run --project WordleGame.csproj -- ServerProgram
+   dotnet run --project WordleGame.csproj -- server
+   ```
+3. **With custom port**:
+   ```bash
+   dotnet run --project WordleGame.csproj -- server 9999
    ```
 
 #### Start the Client
@@ -94,19 +102,21 @@ The maximum number of rounds can be configured in the `GameConfiguration.cs` fil
    ```
 2. **Using command line**:
    ```bash
-   dotnet run --project WordleGame.csproj -- ClientProgram
+   dotnet run --project WordleGame.csproj -- client
    ```
 3. **With custom server address**:
    ```bash
-   dotnet run --project WordleGame.csproj -- ClientProgram 192.168.1.100 8888
+   dotnet run --project WordleGame.csproj -- client 192.168.1.100
+   ```
+4. **With custom server address and port**:
+   ```bash
+   dotnet run --project WordleGame.csproj -- client 192.168.1.100 9999
    ```
 
 ## File Structure
 
 ### Core Files
-- `Program.cs` - Standalone game entry point
-- `ServerProgram.cs` - Server entry point
-- `ClientProgram.cs` - Client entry point
+- `Program.cs` - Main entry point (supports standalone, server, and client modes)
 - `WordleGame.cs` - Core game logic and scoring
 - `WordleServer.cs` - Server implementation
 - `WordleClient.cs` - Client implementation

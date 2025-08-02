@@ -7,10 +7,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Include="Program.cs" />
-    <Compile Include="ServerProgram.cs" />
-    <Compile Include="ClientProgram.cs" />
-  </ItemGroup>
-
 </Project> 

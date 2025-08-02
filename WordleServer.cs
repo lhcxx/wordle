@@ -48,7 +48,8 @@ namespace WordleGame
         private async Task HandleClientAsync(TcpClient client)
         {
             var clientId = Guid.NewGuid().ToString();
-            Console.WriteLine($"Client {clientId} connected from {((IPEndPoint)client.Client.RemoteEndPoint).Address}");
+                            var remoteEndPoint = client.Client.RemoteEndPoint as IPEndPoint;
+                Console.WriteLine($"Client {clientId} connected from {remoteEndPoint?.Address ?? IPAddress.Any}");
 
             try
             {
@@ -102,7 +103,7 @@ namespace WordleGame
             }
         }
 
-        private async Task<string> ProcessGuessAsync(GameSession session, string guess)
+        private Task<string> ProcessGuessAsync(GameSession session, string guess)
         {
             session.CurrentRound++;
 
@@ -110,20 +111,20 @@ namespace WordleGame
             if (string.IsNullOrEmpty(guess) || guess.Length != 5)
             {
                 session.CurrentRound--; // Don't count invalid guesses
-                return "Invalid guess! Please enter a 5-letter word.";
+                return Task.FromResult("Invalid guess! Please enter a 5-letter word.");
             }
 
             if (!guess.All(char.IsLetter))
             {
                 session.CurrentRound--;
-                return "Invalid guess! Please enter only letters.";
+                return Task.FromResult("Invalid guess! Please enter only letters.");
             }
 
             var upperGuess = guess.ToUpper();
             if (!_config.WordList.Contains(upperGuess))
             {
                 session.CurrentRound--;
-                return "Invalid guess! Word not in dictionary.";
+                return Task.FromResult("Invalid guess! Word not in dictionary.");
             }
 
             // Evaluate guess
@@ -136,7 +137,7 @@ namespace WordleGame
                 session.IsGameWon = true;
             }
 
-            return $"Round {session.CurrentRound}/{session.MaxRounds}\n{resultDisplay}";
+            return Task.FromResult($"Round {session.CurrentRound}/{session.MaxRounds}\n{resultDisplay}");
         }
 
         private LetterResult[] EvaluateGuess(string guess, string answer)
