@@ -137,7 +137,7 @@ namespace WordleGame
                 session.IsGameWon = true;
             }
 
-            return Task.FromResult($"Round {session.CurrentRound}/{session.MaxRounds}\n{resultDisplay}");
+            return Task.FromResult($"Round {session.CurrentRound}/{session.MaxRounds}\n{resultDisplay}\nEnter your guess (5-letter word):");
         }
 
         private LetterResult[] EvaluateGuess(string guess, string answer)
@@ -197,7 +197,8 @@ namespace WordleGame
                     _ => "⚪"
                 };
                 
-                sb.Append($"{symbol}{guess[i]} ");
+                sb.Append($"{symbol}{guess[i]}");
+                if (i < 4) sb.Append(" "); // Add space between letters but not at the end
             }
             
             return sb.ToString();
@@ -207,6 +208,7 @@ namespace WordleGame
         {
             var data = Encoding.UTF8.GetBytes(message + "\n");
             await stream.WriteAsync(data, 0, data.Length);
+            await stream.FlushAsync(); // Ensure message is sent immediately
         }
 
         public void Stop()

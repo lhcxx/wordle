@@ -174,11 +174,11 @@ You have 6 attempts to guess the word.
 Enter your guess (5-letter word):
 Your guess: HELLO
 Round 1/6
-Result: 🟢H ⚪E ⚪L ⚪L ⚪O
+Result: H E L L O  (with colored letters: Green for Hit, Yellow for Present, Gray for Miss)
 
 Your guess: WORLD
 Round 2/6
-Result: ⚪W 🟢O ⚪R ⚪L ⚪D
+Result: W O R L D  (with colored letters: Green for Hit, Yellow for Present, Gray for Miss)
 
 Congratulations! You won in 2 rounds!
 
