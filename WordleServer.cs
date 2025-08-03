@@ -137,6 +137,12 @@ namespace WordleGame
                 session.IsGameWon = true;
             }
 
+            // If this was the last round and we didn't win, don't prompt for another guess
+            if (session.CurrentRound >= session.MaxRounds && !session.IsGameWon)
+            {
+                return Task.FromResult($"Round {session.CurrentRound}/{session.MaxRounds}\n{resultDisplay}");
+            }
+            
             return Task.FromResult($"Round {session.CurrentRound}/{session.MaxRounds}\n{resultDisplay}\nEnter your guess (5-letter word):");
         }
 
