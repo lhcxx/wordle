@@ -1,6 +1,6 @@
 # Wordle Console Game
 
-A C# console implementation of the popular Wordle game, featuring the same scoring rules as the original NYTimes Wordle game. The project includes both a standalone console version and a client/server architecture.
+A C# console implementation of the popular Wordle game, featuring the same scoring rules as the original NYTimes Wordle game. The project includes both a standalone console version, a client/server architecture, and a "host cheating" mode similar to Absurdle.
 
 ## Features
 
@@ -22,6 +22,14 @@ A C# console implementation of the popular Wordle game, featuring the same scori
 - **Client-side user interface** for input/output
 - **Network communication** over TCP sockets
 - **Session management** for each client
+
+### Cheating Wordle Version (Task 3)
+- **Host cheating mode** similar to Absurdle
+- **Dynamic candidate management** - host doesn't pre-select answer
+- **Lowest score selection** - always gives worst possible result
+- **Score-based ranking**: Hit (10 points) > Present (1 point) > Miss (0 points)
+- **Candidate filtering** - maintains list of words matching all previous results
+- **External observer transparency** - impossible to detect cheating from guesses
 
 ## Game Rules
 
@@ -46,6 +54,12 @@ A C# console implementation of the popular Wordle game, featuring the same scori
 - **Client**: Provides user interface and network communication
 - **Network Protocol**: TCP-based communication
 - **Security**: Server validates all inputs, client never knows the answer
+
+### Cheating Wordle Mode
+- **Standalone**: Single console application with cheating logic
+- **Server/Client**: Network-based cheating with dynamic candidate management
+- **Algorithm**: Always selects the candidate with lowest score for each guess
+- **Transparency**: External observers cannot detect cheating from game behavior
 
 ## Configuration
 
@@ -113,13 +127,43 @@ The maximum number of rounds can be configured in the `GameConfiguration.cs` fil
    dotnet run --project WordleGame.csproj -- client 192.168.1.100 9999
    ```
 
+### Cheating Wordle Mode
+
+#### Standalone Cheating Game
+```bash
+dotnet run --project WordleGame.csproj -- cheating
+```
+
+#### Start the Cheating Server
+1. **Using batch file** (Windows):
+   ```bash
+   start-cheating-server.bat
+   ```
+2. **Using command line**:
+   ```bash
+   dotnet run --project WordleGame.csproj -- cheating-server
+   ```
+
+#### Start the Cheating Client
+1. **Using batch file** (Windows):
+   ```bash
+   start-cheating-client.bat
+   ```
+2. **Using command line**:
+   ```bash
+   dotnet run --project WordleGame.csproj -- cheating-client
+   ```
+
 ## File Structure
 
 ### Core Files
-- `Program.cs` - Main entry point (supports standalone, server, and client modes)
+- `Program.cs` - Main entry point (supports all modes)
 - `WordleGame.cs` - Core game logic and scoring
 - `WordleServer.cs` - Server implementation
 - `WordleClient.cs` - Client implementation
+- `CheatingWordleGame.cs` - Cheating game logic
+- `CheatingWordleServer.cs` - Cheating server implementation
+- `CheatingWordleClient.cs` - Cheating client implementation
 - `GameConfiguration.cs` - Configuration management
 - `words.json` - Word list configuration
 - `WordleGame.csproj` - Project file
@@ -127,6 +171,8 @@ The maximum number of rounds can be configured in the `GameConfiguration.cs` fil
 ### Scripts
 - `start-server.bat` - Windows batch file to start server
 - `start-client.bat` - Windows batch file to start client
+- `start-cheating-server.bat` - Windows batch file to start cheating server
+- `start-cheating-client.bat` - Windows batch file to start cheating client
 
 ## Example Sessions
 
@@ -185,6 +231,72 @@ Congratulations! You won in 2 rounds!
 Game ended. Press any key to exit...
 ```
 
+### Cheating Wordle Mode
+
+#### Standalone Cheating Game
+```
+Welcome to Cheating Wordle!
+Guess the 5-letter word in 6 attempts.
+H = Hit (correct letter, correct position)
+P = Present (correct letter, wrong position)
+M = Miss (letter not in word)
+
+Round 1/6
+Enter your guess: HELLO
+Result: M E M M M
+
+Round 2/6
+Enter your guess: WORLD
+Result: M M M M M
+
+Round 3/6
+Enter your guess: QUICK
+Result: M M M M M
+
+Round 4/6
+Enter your guess: JUMPY
+Result: M M M M M
+
+Round 5/6
+Enter your guess: ZEBRA
+Result: M M M M M
+
+Round 6/6
+Enter your guess: VIVID
+Result: M M M M M
+
+Game Over! The word was: XXXXX
+Thanks for playing Cheating Wordle!
+```
+
+#### Cheating Server Output
+```
+Cheating Wordle Server started on port 8889
+Waiting for clients...
+Client 12345-67890 connected from 127.0.0.1
+Client 12345-67890 disconnected
+```
+
+#### Cheating Client Output
+```
+Connecting to cheating server at localhost:8889...
+Connected to cheating server!
+Welcome to Cheating Wordle Server!
+You have 6 attempts to guess the word.
+Enter your guess (5-letter word):
+Your guess: HELLO
+Round 1/6
+Result: M E M M M  (with colored letters: Gray for Miss, Yellow for Present, Green for Hit)
+
+Your guess: WORLD
+Round 2/6
+Result: M M M M M  (all Gray for Miss)
+
+Game Over! The word was: XXXXX
+
+Game ended. Press any key to exit...
+```
+
 ## Technical Details
 
 ### Standalone Mode
@@ -201,6 +313,14 @@ Game ended. Press any key to exit...
 - **Concurrent Clients**: Server can handle multiple clients simultaneously
 - **Graceful Shutdown**: Server handles Ctrl+C for clean shutdown
 - **Error Handling**: Robust error handling for network issues
+
+### Cheating Wordle Mode
+- **Dynamic Candidate Management**: Host maintains list of possible words
+- **Score-based Selection**: Always chooses candidate with lowest score
+- **Algorithm**: Hit (10 points) > Present (1 point) > Miss (0 points)
+- **Candidate Filtering**: Updates candidate list based on all previous results
+- **Transparency**: External observers cannot detect cheating behavior
+- **Random Selection**: When multiple candidates have same score, randomly selects one
 
 ## Security Features
 

@@ -6,21 +6,36 @@ class Program
     {
         if (args.Length > 0)
         {
-            switch (args[0].ToLower())
-            {
-                case "server":
-                    await RunServer(args);
-                    break;
-                case "client":
-                    await RunClient(args);
-                    break;
-                default:
-                    Console.WriteLine("Usage:");
-                    Console.WriteLine("  dotnet run -- standalone    # Run standalone game");
-                    Console.WriteLine("  dotnet run -- server        # Run server");
-                    Console.WriteLine("  dotnet run -- client        # Run client");
-                    break;
-            }
+                                    switch (args[0].ToLower())
+                        {
+                            case "server":
+                                await RunServer(args);
+                                break;
+                            case "client":
+                                await RunClient(args);
+                                break;
+                            case "cheating":
+                                var cheatingGame = new CheatingWordleGame();
+                                cheatingGame.Run();
+                                break;
+                            case "cheating-server":
+                                var cheatingServer = new CheatingWordleServer();
+                                await cheatingServer.StartAsync();
+                                break;
+                            case "cheating-client":
+                                var cheatingClient = new CheatingWordleClient();
+                                await cheatingClient.StartAsync();
+                                break;
+                            default:
+                                Console.WriteLine("Usage:");
+                                Console.WriteLine("  dotnet run -- standalone    # Run standalone game");
+                                Console.WriteLine("  dotnet run -- server        # Run server");
+                                Console.WriteLine("  dotnet run -- client        # Run client");
+                                Console.WriteLine("  dotnet run -- cheating      # Run cheating wordle");
+                                Console.WriteLine("  dotnet run -- cheating-server # Run cheating wordle server");
+                                Console.WriteLine("  dotnet run -- cheating-client # Run cheating wordle client");
+                                break;
+                        }
         }
         else
         {
