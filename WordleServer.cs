@@ -189,15 +189,15 @@ namespace WordleGame
             
             for (int i = 0; i < 5; i++)
             {
-                var symbol = result[i] switch
+                var status = result[i] switch
                 {
-                    LetterResult.Hit => "🟢",
-                    LetterResult.Present => "🟡",
-                    LetterResult.Miss => "⚪",
-                    _ => "⚪"
+                    LetterResult.Hit => "H",
+                    LetterResult.Present => "P",
+                    LetterResult.Miss => "M",
+                    _ => "M"
                 };
                 
-                sb.Append($"{symbol}{guess[i]}");
+                sb.Append($"{status}{guess[i]}");
                 if (i < 4) sb.Append(" "); // Add space between letters but not at the end
             }
             

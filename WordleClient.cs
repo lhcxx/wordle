@@ -103,27 +103,35 @@ namespace WordleGame
             
             foreach (var part in parts)
             {
-                // Handle emoji characters properly
-                if (part.Length >= 3 && part.StartsWith("🟢"))
+                if (part.Length >= 2)
                 {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write(part.Substring(2)); // Skip the emoji
-                    Console.ResetColor();
-                    Console.Write(" ");
-                }
-                else if (part.Length >= 3 && part.StartsWith("🟡"))
-                {
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.Write(part.Substring(2)); // Skip the emoji
-                    Console.ResetColor();
-                    Console.Write(" ");
-                }
-                else if (part.Length >= 3 && part.StartsWith("⚪"))
-                {
-                    Console.ForegroundColor = ConsoleColor.Gray;
-                    Console.Write(part.Substring(2)); // Skip the emoji
-                    Console.ResetColor();
-                    Console.Write(" ");
+                    var status = part[0];
+                    var letter = part[1];
+                    
+                    switch (status)
+                    {
+                        case 'H': // Hit
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.Write(letter);
+                            Console.ResetColor();
+                            Console.Write(" ");
+                            break;
+                        case 'P': // Present
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.Write(letter);
+                            Console.ResetColor();
+                            Console.Write(" ");
+                            break;
+                        case 'M': // Miss
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                            Console.Write(letter);
+                            Console.ResetColor();
+                            Console.Write(" ");
+                            break;
+                        default:
+                            Console.Write(part + " ");
+                            break;
+                    }
                 }
                 else
                 {
