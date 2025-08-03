@@ -64,7 +64,7 @@ A C# console implementation of the popular Wordle game, featuring the same scori
 ## Configuration
 
 ### Word List
-The game uses a JSON configuration file (`words.json`) containing 100 5-letter words. You can modify this file to add or change words.
+The game uses a JSON configuration file (`config/words.json`) containing 100 5-letter words. You can modify this file to add or change words.
 
 ### Maximum Rounds
 The maximum number of rounds can be configured in the `GameConfiguration.cs` file by changing the `MaxRounds` property (default: 6).
@@ -82,97 +82,80 @@ The maximum number of rounds can be configured in the `GameConfiguration.cs` fil
 ### Standalone Mode
 1. **Build the project**:
    ```bash
-   dotnet build
+   dotnet build wordle.sln
    ```
 2. **Run the standalone game**:
    ```bash
-   dotnet run --project WordleGame.csproj
-   ```
-   or explicitly:
-   ```bash
-   dotnet run --project WordleGame.csproj -- standalone
+   dotnet run --project src/WordleGame.Core/WordleGame.Core.csproj
    ```
 
 ### Client/Server Mode
 
 #### Start the Server
-1. **Using batch file** (Windows):
-   ```bash
-   start-server.bat
-   ```
-2. **Using command line**:
-   ```bash
-   dotnet run --project WordleGame.csproj -- server
-   ```
-3. **With custom port**:
-   ```bash
-   dotnet run --project WordleGame.csproj -- server 9999
-   ```
+```bash
+dotnet run --project src/WordleGame.Server/WordleGame.Server.csproj
+```
 
 #### Start the Client
-1. **Using batch file** (Windows):
-   ```bash
-   start-client.bat
-   ```
-2. **Using command line**:
-   ```bash
-   dotnet run --project WordleGame.csproj -- client
-   ```
-3. **With custom server address**:
-   ```bash
-   dotnet run --project WordleGame.csproj -- client 192.168.1.100
-   ```
-4. **With custom server address and port**:
-   ```bash
-   dotnet run --project WordleGame.csproj -- client 192.168.1.100 9999
-   ```
+```bash
+dotnet run --project src/WordleGame.Client/WordleGame.Client.csproj
+```
 
 ### Cheating Wordle Mode
 
 #### Standalone Cheating Game
 ```bash
-dotnet run --project WordleGame.csproj -- cheating
+dotnet run --project src/WordleGame.Cheating/WordleGame.Cheating.csproj
 ```
 
 #### Start the Cheating Server
-1. **Using batch file** (Windows):
-   ```bash
-   start-cheating-server.bat
-   ```
-2. **Using command line**:
-   ```bash
-   dotnet run --project WordleGame.csproj -- cheating-server
-   ```
+```bash
+dotnet run --project src/WordleGame.Cheating/WordleGame.Cheating.csproj -- server
+```
 
 #### Start the Cheating Client
-1. **Using batch file** (Windows):
-   ```bash
-   start-cheating-client.bat
-   ```
-2. **Using command line**:
-   ```bash
-   dotnet run --project WordleGame.csproj -- cheating-client
-   ```
+```bash
+dotnet run --project src/WordleGame.Cheating/WordleGame.Cheating.csproj -- client
+```
 
 ## File Structure
 
-### Core Files
-- `Program.cs` - Main entry point (supports all modes)
-- `WordleGame.cs` - Core game logic and scoring
-- `WordleServer.cs` - Server implementation
-- `WordleClient.cs` - Client implementation
-- `CheatingWordleGame.cs` - Cheating game logic
-- `CheatingWordleServer.cs` - Cheating server implementation
-- `CheatingWordleClient.cs` - Cheating client implementation
-- `GameConfiguration.cs` - Configuration management
-- `words.json` - Word list configuration
-- `WordleGame.csproj` - Project file
+### Project Organization
+```
+wordle/
+├── src/
+│   ├── WordleGame.Core/           # Core game logic and configuration
+│   │   ├── GameConfiguration.cs   # Configuration management
+│   │   └── WordleGame.cs         # Core game logic and scoring
+│   ├── WordleGame.Client/         # Client implementation
+│   │   └── WordleClient.cs       # Client implementation
+│   ├── WordleGame.Server/         # Server implementation
+│   │   └── WordleServer.cs       # Server implementation
+│   └── WordleGame.Cheating/       # Cheating game implementation
+│       ├── CheatingWordleGame.cs  # Cheating game logic
+│       └── CheatingWordleServer.cs # Cheating server implementation
+├── tests/
+│   └── WordleGame.Tests/          # Unit and integration tests
+│       ├── UnitTests/
+│       └── IntegrationTests/
+├── config/
+│   └── words.json                 # Word list configuration
+├── wordle.sln                     # Solution file
+└── README.md                      # This file
+```
 
-### Scripts
-- `start-server.bat` - Windows batch file to start server
-- `start-client.bat` - Windows batch file to start client
-- `start-cheating-server.bat` - Windows batch file to start cheating server
-- `start-cheating-client.bat` - Windows batch file to start cheating client
+### Core Files
+- `src/WordleGame.Core/GameConfiguration.cs` - Configuration management
+- `src/WordleGame.Core/WordleGame.cs` - Core game logic and scoring
+- `src/WordleGame.Server/WordleServer.cs` - Server implementation
+- `src/WordleGame.Client/WordleClient.cs` - Client implementation
+- `src/WordleGame.Cheating/CheatingWordleGame.cs` - Cheating game logic
+- `src/WordleGame.Cheating/CheatingWordleServer.cs` - Cheating server implementation
+- `config/words.json` - Word list configuration
+
+### Test Files
+- `tests/WordleGame.Tests/UnitTests/` - Unit tests for core functionality
+- `tests/WordleGame.Tests/IntegrationTests/` - Integration tests for client/server communication
 
 ## Example Sessions
 
@@ -333,7 +316,7 @@ Game ended. Press any key to exit...
 ## Customization
 
 ### Adding Words
-To add your own words, edit the `words.json` file and add 5-letter words to the "Words" array. The game will automatically load the new word list on startup.
+To add your own words, edit the `config/words.json` file and add 5-letter words to the "Words" array. The game will automatically load the new word list on startup.
 
 ### Network Configuration
 - **Change Port**: Modify the port number in `ServerProgram.cs` and `ClientProgram.cs`

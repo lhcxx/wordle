@@ -2,20 +2,39 @@ using System.Text.Json;
 
 namespace WordleGame
 {
+    /// <summary>
+    /// Game configuration class responsible for managing core Wordle game settings
+    /// including maximum rounds, word list, and other game parameters
+    /// </summary>
     public class GameConfiguration
     {
+        /// <summary>
+        /// Maximum number of rounds for the game, defaults to 6 rounds
+        /// </summary>
         public int MaxRounds { get; set; } = 6;
+        
+        /// <summary>
+        /// List of words available for the game, all words are converted to uppercase
+        /// </summary>
         public List<string> WordList { get; set; } = new();
 
+        /// <summary>
+        /// Constructor that initializes game configuration and loads the word list
+        /// </summary>
         public GameConfiguration()
         {
             LoadWordList();
         }
 
+        /// <summary>
+        /// Loads the word list, prioritizing JSON files, falls back to default words if files don't exist
+        /// Loading order: config/words.json -> words.json -> default word list
+        /// </summary>
         private void LoadWordList()
         {
             try
             {
+                // First try to load from config directory
                 if (File.Exists("config/words.json"))
                 {
                     var jsonContent = File.ReadAllText("config/words.json");
@@ -25,6 +44,7 @@ namespace WordleGame
                         WordList = config.Words.Select(w => w.ToUpper()).ToList();
                     }
                 }
+                // If config directory doesn't exist, try loading from root directory
                 else if (File.Exists("words.json"))
                 {
                     var jsonContent = File.ReadAllText("words.json");
@@ -34,6 +54,7 @@ namespace WordleGame
                         WordList = config.Words.Select(w => w.ToUpper()).ToList();
                     }
                 }
+                // If no files exist, use default word list and save to file
                 else
                 {
                     // Fallback to default words if file doesn't exist
@@ -43,11 +64,15 @@ namespace WordleGame
             }
             catch (Exception)
             {
-                // Fallback to default words if there's an error
+                // If there's an error during loading, use default word list
                 WordList = GetDefaultWords();
             }
         }
 
+        /// <summary>
+        /// Saves the current word list to a JSON file
+        /// Uses indented format for better readability and editing
+        /// </summary>
         private void SaveWordList()
         {
             try
@@ -58,10 +83,15 @@ namespace WordleGame
             }
             catch (Exception)
             {
-                // Ignore save errors
+                // Ignore save errors, don't affect game operation
             }
         }
 
+        /// <summary>
+        /// Gets the default word list containing common 5-letter English words
+        /// These words serve as a backup vocabulary to ensure the game always has available words
+        /// </summary>
+        /// <returns>List containing default words</returns>
         private List<string> GetDefaultWords()
         {
             return new List<string>
@@ -123,8 +153,14 @@ namespace WordleGame
         }
     }
 
+    /// <summary>
+    /// Word list configuration class for JSON serialization and deserialization
+    /// </summary>
     public class WordListConfig
     {
+        /// <summary>
+        /// Word list containing all words available for the game
+        /// </summary>
         public List<string> Words { get; set; } = new();
     }
 } 
