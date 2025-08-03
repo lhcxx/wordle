@@ -16,7 +16,16 @@ namespace WordleGame
         {
             try
             {
-                if (File.Exists("words.json"))
+                if (File.Exists("config/words.json"))
+                {
+                    var jsonContent = File.ReadAllText("config/words.json");
+                    var config = JsonSerializer.Deserialize<WordListConfig>(jsonContent);
+                    if (config?.Words != null)
+                    {
+                        WordList = config.Words.Select(w => w.ToUpper()).ToList();
+                    }
+                }
+                else if (File.Exists("words.json"))
                 {
                     var jsonContent = File.ReadAllText("words.json");
                     var config = JsonSerializer.Deserialize<WordListConfig>(jsonContent);
@@ -85,7 +94,7 @@ namespace WordleGame
                 "MARIA", "MATCH", "MAYBE", "MAYOR", "MEANT", "MEDIA", "METAL", "MIGHT", "MINOR", "MINUS",
                 "MIXED", "MODEL", "MONEY", "MONTH", "MORAL", "MOTOR", "MOUNT", "MOUSE", "MOUTH", "MOVED",
                 "MOVIE", "MUSIC", "NEEDS", "NEVER", "NEWLY", "NIGHT", "NOISE", "NORTH", "NOTED", "NOVEL",
-                "NURSE", "OCCUR", "OCEAN", "OFFER", "OFFICE", "ONION", "ONLINE", "OPERA", "OTHER", "OUGHT",
+                "NURSE", "OCCUR", "OCEAN", "OFFER", "ONION", "OPERA", "OTHER", "OUGHT",
                 "OUTER", "OWNER", "PAINT", "PANEL", "PAPER", "PARTY", "PEACE", "PETER", "PHASE", "PHONE",
                 "PHOTO", "PIECE", "PILOT", "PITCH", "PLACE", "PLAIN", "PLANE", "PLANT", "PLATE", "POINT",
                 "POUND", "POWER", "PRESS", "PRICE", "PRIDE", "PRIME", "PRINT", "PRIOR", "PRIZE", "PROOF",
