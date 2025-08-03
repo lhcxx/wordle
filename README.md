@@ -92,11 +92,33 @@ The maximum number of rounds can be configured in the `GameConfiguration.cs` fil
 ### Client/Server Mode
 
 #### Start the Server
+**Using batch file (Windows):**
+```bash
+# From project root directory
+scripts\start-server.bat
+
+# Or from scripts directory
+cd scripts
+start-server.bat
+```
+
+**Using command line:**
 ```bash
 dotnet run --project src/WordleGame.Server/WordleGame.Server.csproj
 ```
 
 #### Start the Client
+**Using batch file (Windows):**
+```bash
+# From project root directory
+scripts\start-client.bat
+
+# Or from scripts directory
+cd scripts
+start-client.bat
+```
+
+**Using command line:**
 ```bash
 dotnet run --project src/WordleGame.Client/WordleGame.Client.csproj
 ```
@@ -109,11 +131,33 @@ dotnet run --project src/WordleGame.Cheating/WordleGame.Cheating.csproj
 ```
 
 #### Start the Cheating Server
+**Using batch file (Windows):**
+```bash
+# From project root directory
+scripts\start-cheating-server.bat
+
+# Or from scripts directory
+cd scripts
+start-cheating-server.bat
+```
+
+**Using command line:**
 ```bash
 dotnet run --project src/WordleGame.Cheating/WordleGame.Cheating.csproj -- server
 ```
 
 #### Start the Cheating Client
+**Using batch file (Windows):**
+```bash
+# From project root directory
+scripts\start-cheating-client.bat
+
+# Or from scripts directory
+cd scripts
+start-cheating-client.bat
+```
+
+**Using command line:**
 ```bash
 dotnet run --project src/WordleGame.Cheating/WordleGame.Cheating.csproj -- client
 ```
@@ -140,6 +184,11 @@ wordle/
 │       └── IntegrationTests/
 ├── config/
 │   └── words.json                 # Word list configuration
+├── scripts/                       # Batch files for easy execution
+│   ├── start-server.bat           # Start server
+│   ├── start-client.bat           # Start client
+│   ├── start-cheating-server.bat  # Start cheating server
+│   └── start-cheating-client.bat  # Start cheating client
 ├── wordle.sln                     # Solution file
 └── README.md                      # This file
 ```
@@ -152,6 +201,12 @@ wordle/
 - `src/WordleGame.Cheating/CheatingWordleGame.cs` - Cheating game logic
 - `src/WordleGame.Cheating/CheatingWordleServer.cs` - Cheating server implementation
 - `config/words.json` - Word list configuration
+
+### Scripts
+- `scripts/start-server.bat` - Windows batch file to start server
+- `scripts/start-client.bat` - Windows batch file to start client
+- `scripts/start-cheating-server.bat` - Windows batch file to start cheating server
+- `scripts/start-cheating-client.bat` - Windows batch file to start cheating client
 
 ### Test Files
 - `tests/WordleGame.Tests/UnitTests/` - Unit tests for core functionality
